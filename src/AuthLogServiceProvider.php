@@ -24,7 +24,7 @@ class AuthLogServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__.'/../config/authlog.php', 'authlog');
 
-        $this->call('vendor:publish', [
+        \Artisan::call('vendor:publish', [
             '--provider' => 'Spatie\WelcomeNotification\WelcomeNotificationServiceProvider',
             '--tag' => 'migrations'
         ]);
