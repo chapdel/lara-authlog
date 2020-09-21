@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Chapdel\AuthLog\AuthLog;
+use Welcome;
 
 class LogSuccessfulRegister
 {
@@ -49,6 +50,6 @@ class LogSuccessfulRegister
 
         $expiresAt =  Carbon::now()->addDay();
 
-        $user->sendWelcomeNotification($expiresAt);
+        $user->notify(new Welcome($user));
     }
 }
