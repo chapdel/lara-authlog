@@ -1,6 +1,6 @@
 <?php
 
-namespace Yadahan\AuthenticationLog\Notifications;
+namespace Chapdel\AuthLog\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
-use Yadahan\AuthenticationLog\AuthenticationLog;
+use Chapdel\AuthLog\AuthLog;
 
 class NewDevice extends Notification implements ShouldQueue
 {
@@ -17,17 +17,17 @@ class NewDevice extends Notification implements ShouldQueue
     /**
      * The authentication log.
      *
-     * @var \Yadahan\AuthenticationLog\AuthenticationLog
+     * @var \Chapdel\AuthLog\AuthLog
      */
     public $authenticationLog;
 
     /**
      * Create a new notification instance.
      *
-     * @param  \Yadahan\AuthenticationLog\AuthenticationLog  $authenticationLog
+     * @param  \Chapdel\AuthLog\AuthLog  $authenticationLog
      * @return void
      */
-    public function __construct(AuthenticationLog $authenticationLog)
+    public function __construct(AuthLog $authenticationLog)
     {
         $this->authenticationLog = $authenticationLog;
     }
@@ -40,7 +40,7 @@ class NewDevice extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return $notifiable->notifyAuthenticationLogVia();
+        return $notifiable->notifyAuthLogVia();
     }
 
     /**
@@ -52,8 +52,8 @@ class NewDevice extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(trans('authentication-log::messages.subject'))
-            ->markdown('authentication-log::emails.new', [
+            ->subject(trans('authlog::messages.subject'))
+            ->markdown('authlog::emails.new', [
                 'account' => $notifiable,
                 'time' => $this->authenticationLog->login_at,
                 'ipAddress' => $this->authenticationLog->ip_address,
@@ -72,7 +72,7 @@ class NewDevice extends Notification implements ShouldQueue
         return (new SlackMessage)
             ->from(config('app.name'))
             ->warning()
-            ->content(trans('authentication-log::messages.content', ['app' => config('app.name')]))
+            ->content(trans('authlog::messages.content', ['app' => config('app.name')]))
             ->attachment(function ($attachment) use ($notifiable) {
                 $attachment->fields([
                     'Account' => $notifiable->email,
@@ -92,6 +92,6 @@ class NewDevice extends Notification implements ShouldQueue
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-            ->content(trans('authentication-log::messages.content', ['app' => config('app.name')]));
+            ->content(trans('authlog::messages.content', ['app' => config('app.name')]));
     }
 }

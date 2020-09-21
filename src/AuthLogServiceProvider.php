@@ -1,11 +1,12 @@
 <?php
 
-namespace Yadahan\AuthenticationLog;
+namespace Chapdel\AuthLog;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Command;
 
-class AuthenticationLogServiceProvider extends ServiceProvider
+class AuthLogServiceProvider extends ServiceProvider
 {
     use EventMap;
 
@@ -18,29 +19,37 @@ class AuthenticationLogServiceProvider extends ServiceProvider
     {
         $this->registerEvents();
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'authentication-log');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'authlog');
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'authentication-log');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'authlog');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/authentication-log.php', 'authentication-log');
+        $this->mergeConfigFrom(__DIR__.'/../config/authlog.php', 'authlog');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../database/migrations' => database_path('migrations'),
-            ], 'authentication-log-migrations');
+            ], 'authlog-migrations');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/authentication-log'),
-            ], 'authentication-log-views');
+                __DIR__.'/../resources/views' => resource_path('views/vendor/authlog'),
+            ], 'authlog-views');
 
             $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/authentication-log'),
-            ], 'authentication-log-translations');
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/authlog'),
+            ], 'authlog-translations');
 
             $this->publishes([
-                __DIR__.'/../config/authentication-log.php' => config_path('authentication-log.php'),
-            ], 'authentication-log-config');
+                __DIR__.'/../config/authlog.php' => config_path('authlog.php'),
+            ], 'authlog-config');
+
+            $this->commands([
+                Console\ClearCommand::class,
+            ]);
+
+
         }
+
+        \Artisan::call('vendor:publish --provider="Spatie\WelcomeNotification\WelcomeNotificationServiceProvider --tag="migrations"');
     }
 
     /**

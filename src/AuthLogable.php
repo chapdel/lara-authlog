@@ -1,15 +1,15 @@
 <?php
 
-namespace Yadahan\AuthenticationLog;
+namespace Chapdel\AuthLog;
 
-trait AuthenticationLogable
+trait AuthLogable
 {
     /**
      * Get the entity's authentications.
      */
     public function authentications()
     {
-        return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
+        return $this->morphMany(AuthLog::class, 'authenticatable')->latest('login_at');
     }
 
     /**
@@ -17,7 +17,7 @@ trait AuthenticationLogable
      *
      * @return array
      */
-    public function notifyAuthenticationLogVia()
+    public function notifyAuthLogVia()
     {
         return ['mail'];
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Yadahan\AuthenticationLog\Tests;
+namespace Chapdel\AuthLog\Tests;
 
 use Orchestra\Testbench\TestCase;
 
-class AuthenticationLogTest extends TestCase
+class AuthLogTest extends TestCase
 {
     /**
      * A basic test example.

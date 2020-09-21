@@ -1,11 +1,11 @@
 <?php
 
-namespace Yadahan\AuthenticationLog\Listeners;
+namespace Chapdel\AuthLog\Listeners;
 
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Yadahan\AuthenticationLog\AuthenticationLog;
+use Chapdel\AuthLog\AuthLog;
 
 class LogSuccessfulLogout
 {
@@ -42,7 +42,7 @@ class LogSuccessfulLogout
             $authenticationLog = $user->authentications()->whereIpAddress($ip)->whereUserAgent($userAgent)->first();
 
             if (! $authenticationLog) {
-                $authenticationLog = new AuthenticationLog([
+                $authenticationLog = new AuthLog([
                     'ip_address' => $ip,
                     'user_agent' => $userAgent,
                 ]);

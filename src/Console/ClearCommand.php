@@ -1,10 +1,10 @@
 <?php
 
-namespace Yadahan\AuthenticationLog\Console;
+namespace Chapdel\AuthLog\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Yadahan\AuthenticationLog\AuthenticationLog;
+use Chapdel\AuthLog\AuthLog;
 
 class ClearCommand extends Command
 {
@@ -13,14 +13,14 @@ class ClearCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'authentication-log:clear';
+    protected $signature = 'authlog:clear';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clear old records from the authentication log';
+    protected $description = 'Clear old records from the authlog';
 
     /**
      * Execute the console command.
@@ -29,13 +29,13 @@ class ClearCommand extends Command
      */
     public function handle()
     {
-        $this->comment('Clearing authentication log...');
+        $this->comment('Clearing auth log...');
 
-        $days = config('authentication-log.older');
+        $days = config('authlog.older');
         $from = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
 
-        AuthenticationLog::where('login_at', '<', $from)->delete();
+        AuthLog::where('login_at', '<', $from)->delete();
 
-        $this->info('Authentication log cleared successfully.');
+        $this->info('Auth log cleared successfully.');
     }
 }

@@ -2,13 +2,12 @@
 
 namespace Chapdel\AuthLog\Listeners;
 
-use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Chapdel\AuthLog\AuthLog;
-use Chapdel\AuthLog\Notifications\NewDevice;
 
-class LogSuccessfulLogin
+class LogSuccessfulRegister
 {
     /**
      * The request.
@@ -31,15 +30,14 @@ class LogSuccessfulLogin
     /**
      * Handle the event.
      *
-     * @param  Login  $event
+     * @param  Register  $event
      * @return void
      */
-    public function handle(Login $event)
+    public function handle(Registered $event)
     {
         $user = $event->user;
         $ip = $this->request->ip();
         $userAgent = $this->request->userAgent();
-        $known = $user->authentications()->whereIpAddress($ip)->whereUserAgent($userAgent)->first();
 
         $authenticationLog = new AuthLog([
             'ip_address' => $ip,
@@ -49,8 +47,8 @@ class LogSuccessfulLogin
 
         $user->authentications()->save($authenticationLog);
 
-        if (! $known && config('authlog.notify')) {
-            $user->notify(new NewDevice($authenticationLog));
-        }
+        $expiresAt =  Carbon::now()->addDay();
+
+        $user->sendWelcomeNotification($expiresAt);
     }
 }

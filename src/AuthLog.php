@@ -1,10 +1,10 @@
 <?php
 
-namespace Yadahan\AuthenticationLog;
+namespace Chapdel\AuthLog;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AuthenticationLog extends Model
+class AuthLog extends Model
 {
     /**
      * The table associated with the model.
