@@ -44,11 +44,12 @@ class AuthLogServiceProvider extends ServiceProvider
             $this->commands([
                 Console\ClearCommand::class,
             ]);
-
-
         }
 
-        \Artisan::call('vendor:publish --provider="Spatie\WelcomeNotification\WelcomeNotificationServiceProvider --tag="migrations"');
+        \Artisan::call('vendor:publish', [
+            '--provider' => 'Spatie\WelcomeNotification\WelcomeNotificationServiceProvider',
+            '--tag' => 'migrations'
+        ]);
     }
 
     /**
