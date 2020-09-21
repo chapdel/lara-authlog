@@ -19,17 +19,17 @@ class NewDevice extends Notification implements ShouldQueue
      *
      * @var \Chapdel\AuthLog\AuthLog
      */
-    public $authenticationLog;
+    public $authLog;
 
     /**
      * Create a new notification instance.
      *
-     * @param  \Chapdel\AuthLog\AuthLog  $authenticationLog
+     * @param  \Chapdel\AuthLog\AuthLog  $authLog
      * @return void
      */
-    public function __construct(AuthLog $authenticationLog)
+    public function __construct(AuthLog $authLog)
     {
-        $this->authenticationLog = $authenticationLog;
+        $this->authLog = $authLog;
     }
 
     /**
@@ -55,9 +55,9 @@ class NewDevice extends Notification implements ShouldQueue
             ->subject(trans('authlog::messages.subject'))
             ->markdown('authlog::emails.new', [
                 'account' => $notifiable,
-                'time' => $this->authenticationLog->login_at,
-                'ipAddress' => $this->authenticationLog->ip_address,
-                'browser' => $this->authenticationLog->user_agent,
+                'time' => $this->authLog->login_at,
+                'ipAddress' => $this->authLog->ip_address,
+                'browser' => $this->authLog->user_agent,
             ]);
     }
 
@@ -76,9 +76,9 @@ class NewDevice extends Notification implements ShouldQueue
             ->attachment(function ($attachment) use ($notifiable) {
                 $attachment->fields([
                     'Account' => $notifiable->email,
-                    'Time' => $this->authenticationLog->login_at->toCookieString(),
-                    'IP Address' => $this->authenticationLog->ip_address,
-                    'Browser' => $this->authenticationLog->user_agent,
+                    'Time' => $this->authLog->login_at->toCookieString(),
+                    'IP Address' => $this->authLog->ip_address,
+                    'Browser' => $this->authLog->user_agent,
                 ]);
             });
     }
@@ -95,3 +95,4 @@ class NewDevice extends Notification implements ShouldQueue
             ->content(trans('authlog::messages.content', ['app' => config('app.name')]));
     }
 }
+
