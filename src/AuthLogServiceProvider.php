@@ -4,7 +4,6 @@ namespace Chapdel\AuthLog;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Console\Command;
 
 class AuthLogServiceProvider extends ServiceProvider
 {
